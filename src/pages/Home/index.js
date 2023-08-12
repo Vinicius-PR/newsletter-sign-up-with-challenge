@@ -1,13 +1,27 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import illustrationImg from '../../assets/images/illustration-sign-up-desktop.svg';
+import illustrationImgMobile from '../../assets/images/illustration-sign-up-mobile.svg';
 import iconList from '../../assets/images/icon-list.svg';
 import { useNavigate } from 'react-router-dom';
 
 import './styles.css';
 
-export default function Home({email, onSetEmail}) {
+export default function Home({ email, onSetEmail }) {
   let navigate = useNavigate();
   const [invalid, setInvalid] = useState(false)
+  const [width, setWidth] = useState(0)
+
+  useEffect(() => {
+    function handleResize() {
+      setWidth(window.innerWidth)
+    }
+    window.addEventListener('resize', handleResize)
+    handleResize()
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [setWidth])
 
   function validateEmail(email) {
     const regex = new RegExp("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
@@ -26,13 +40,13 @@ export default function Home({email, onSetEmail}) {
         <h1>Stay updated!</h1>
         <p>Join 60,000+ product managers receiving monthly updates on:</p>
         <ul>
-          <li><img src={iconList} alt='Icon'/> Product discovery and building what matters</li>
-          <li><img src={iconList} alt='Icon'/> mesuaring to ensure updates are a success</li>
-          <li><img src={iconList} alt='Icon'/> and much more!</li>
+          <li><img src={iconList} alt='Icon' /> Product discovery and building what matters</li>
+          <li><img src={iconList} alt='Icon' /> mesuaring to ensure updates are a success</li>
+          <li><img src={iconList} alt='Icon' /> and much more!</li>
         </ul>
 
-        <form 
-          className="form-newsletter" 
+        <form
+          className="form-newsletter"
           action="#"
           onSubmit={(e) => {
             e.preventDefault();
@@ -41,19 +55,19 @@ export default function Home({email, onSetEmail}) {
             }
           }}
         >
-          <span 
-            id="erro-message-email" 
-            className={invalid ? 'invalid': ''}
+          <span
+            id="erro-message-email"
+            className={invalid ? 'invalid' : ''}
           >
             Valid email required
           </span>
           <label htmlFor="email">Email address</label>
           <input
-            className={invalid ? 'invalid': ''} 
-            type="email" 
-            name="email" 
-            id="email" 
-            required 
+            className={invalid ? 'invalid' : ''}
+            type="email"
+            name="email"
+            id="email"
+            required
             placeholder="email@company.com"
             value={email}
             onChange={(e) => {
@@ -66,7 +80,7 @@ export default function Home({email, onSetEmail}) {
       </div>
 
       <div className="img-bloc">
-        <img src={illustrationImg} alt="illustration" />
+        <img src={width > 768 ? illustrationImg : illustrationImgMobile} alt="illustration" />
       </div>
     </main>
   )

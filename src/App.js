@@ -1,10 +1,7 @@
-import './App.css';
-
-import {BrowserRouter ,Routes, Route} from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Success from './pages/Success';
 import { useState } from 'react';
-
 
 function App() {
   const [email, setEmail] = useState('')
@@ -17,9 +14,9 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={
-          <Home 
+          <Home
             email={email}
-            onSetEmail={onSetEmail}/>
+            onSetEmail={onSetEmail} />
         } />
         <Route path='/success' element={<Success email={email} onSetEmail={onSetEmail} />} />
       </Routes>
